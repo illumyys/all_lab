@@ -4,7 +4,8 @@ from tkinter import ttk
 from tkinter import messagebox
 
 
-connectionString = '''ODBC Driver 18 for SQL Server};SERVER=DESKTOP-VRKH844;DATABASE=QLMonAn;UID=sa;PWD=sa;Encrypt=no'''
+connectionString = '''DRIVER={ODBC Driver 17 for SQL Server};
+                        SERVER=DESKTOP-VRKH844;DATABASE=QLMonAn;UID=sa;PWD=1;Encrpt=no'''
 my_list=[]
 def get_connection():
     conn = pyodbc.connect(connectionString)
@@ -13,7 +14,6 @@ def get_connection():
 def close_connection(conn):
     if conn:
         conn.close()
-
 def get_all_nhom():
         connection = get_connection()
         cursor = connection.cursor()
@@ -73,6 +73,7 @@ def treeView( data ):
         tree.insert("", "end", values=row)
 
 def on_get_index_clicked():
+    # Get the selected index
     selected_iid = tree.focus()   
     item_value = tree.item(selected_iid, "values")[0]
     delete_mon_an(item_value) 
@@ -108,6 +109,8 @@ def add_food(ma,ten,dvt,dongia,nhom):
     finally:
         close_connection(connection)
     
+
+
 
 def table2():
     root1 =Tk()

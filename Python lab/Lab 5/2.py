@@ -1,7 +1,7 @@
 import pyodbc
 
-connectionString = ('ODBC Driver 17 for SQL Server};SERVER=DESKTOP-VRKH844;'
-                    'DATABASE=QLMonAn;UID=sa;PWD=sa;Encrypt=no')
+connectionString = '''DRIVER={ODBC Driver 17 for SQL Server};
+                        SERVER=DESKTOP-VRKH844;DATABASE=QLSinhVien;UID=sa;PWD=1;Encrpt=no'''
 
 def get_connection():
     conn = pyodbc.connect(connectionString)
@@ -29,6 +29,7 @@ def get_all_class():
         close_connection(connection)
     except (Exception, pyodbc.Error) as error:
         print("Đã có lỗi xảy ra khi hự thi. Thông tin lỗi: ",error)
+get_all_class()
 def get_all_student():
     try:
         connection = get_connection()
@@ -45,13 +46,14 @@ def get_all_student():
 
         close_connection(connection)
     except (Exception, pyodbc.Error) as error:
-        print("Đã có lỗi xảy ra khi hự thi. Thông tin lỗi: ",error)   
+        print("Đã có lỗi xảy ra khi hự thi. Thông tin lỗi: ",error)
+get_all_student()   
              
 def get_all_class_student():
     try:
         connection = get_connection()
         cursor = connection.cursor()
-        #select_query = """select * from Lop"""
+        select_query = """select * from Lop"""
         select_query = """select SinhVien.ID, HoTen, MaLop, Lop.TenLop
                             from SinhVien, Lop
                             where SinhVien.MaLop = Lop.ID"""                      
@@ -133,7 +135,7 @@ def get_student_by_idLop(tenLop):
     except (Exception, pyodbc.Error) as error:
         print("Đã có lỗi xả ra khi thực thi. Thông tin lỗi: ", error)
 
-# get_student_by_idLop('CTK44A')
+# get_student_by_idLop('CTK43')
 
 
 def search_students_by_name_and_class(tenSinhVien, maLop):
@@ -157,7 +159,7 @@ def search_students_by_name_and_class(tenSinhVien, maLop):
     finally:
         connection.close()
 
-    search_students_by_name_and_class('Trung', '3')
+# search_students_by_name_and_class('Trung', '3')
 
 
 def insert_class(class_name):
@@ -202,6 +204,5 @@ def delete_class_by_id(class_id):
     except (Exception, pyodbc.Error) as error:
         print("Đã có lỗi xảy ra khi thực thi. Thông tin lỗi: ", error)
 
-# Sử dụng hàm để xóa lớp có ID là 9
-delete_class_by_id(9)
-get_all_class()
+# delete_class_by_id(9)
+# get_all_class()
