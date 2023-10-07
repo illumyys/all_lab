@@ -1,52 +1,70 @@
 import datetime
+from encodings import utf_8
+import math
 
 class SinhVien:
-  truong = "Trường Đại Học Đà Lạt"
-  
-  def __init__(self, maSo: int, hoTen: str, ngaySinh: datetime) ->None:
-    self.__maSo = maSo
-    self.__hoTen = hoTen
-    self.__ngaySinh = ngaySinh
-  
-  @property
-  def maSo(self):
-    return self.__maSo
+    truong = "Đại học Đà Lạt"
 
-  @maSo.setter
-  def maSo(self, maso):
-    if self.laMaSoHopLe(maso):
-        return len(str(maso)) == 7
+    def __init__(self, maSo: int, hoTen: str, ngaySinh: datetime) -> None:
+        self.__maSo = maSo
+        self.__hoTen = hoTen
+        self.__ngaySinh = ngaySinh
 
-  @classmethod
-  def doiTenTruong(self, tenmoi):
-    self.truong = tenmoi
+    @property
+    def maSo(self):
+        return self.__maSo
+    
+    @property
+    def hoTen(self):
+        return self.__hoTen
+    
+    @property
+    def ngaySinh(self):
+        return self.ngaySinh
+    
+    @maSo.setter
+    def maSo(self, maSo):
+        if self.laMaSoHopLe(maSo):
+            self.__maSo = maSo
 
-  def __str__(self) ->str:
-    return f"{self.__maSo}\t{self.__hoTen}\t{self.__ngaySinh}"
+    @staticmethod
+    def laMaSoHopLe(maSo: int):
+        return len(str(maSo)) == 7
 
-  def xuat(self):
-    print(f"{self.__maSo}\t{self.__hoTen}\t{self.__ngaySinh}")
+    @classmethod
+    def doiTenTruong(self, tenMoi):
+        self.truong = tenMoi
 
-class DanhSach:
-    def __init__(self) ->None:
+    def __str__(self) -> str:
+        return f"{self.__maSo}\t{self.__hoTen}\t{self.__ngaySinh}"
+    
+    def xuat(self):
+        print(f"{self.__maSo}\t{self.__hoTen}\t{self.__ngaySinh}")
+
+ #---------------------------------------------------------------------------------------------------
+ 
+class DanhSachSV:
+    def __init__(self) -> None:
         self.dssv = []
-
-    def themSinhVien(self, sv:SinhVien):
+    
+    def themSinhVien(self, sv: SinhVien):
         self.dssv.append(sv)
 
     def xuat(self):
         for sv in self.dssv:
             print(sv)
+
+    def timSvTheoMssv(self, mssv: int):
+        for sv in self.dssv:
+            if sv.maSo == mssv:
+                return sv
     
-    def timSVTheoMssv(self,mssv:int):
-        return [ sv for sv in self.dssv if sv.mssv == mssv]
-
-    def timVTSvTheoMssv(self,mssv: int):
+    def timVTSvTheoMssv(self, mssv: int):
         for i in range(len(self.dssv)):
-          if self.dssv[i].mssv == mssv:
-            return i
-          return -1
-
+            if self.dssv[i].mssv == mssv:
+                return i
+        return -1
+    
     def xoaSvTheoMssv(self, maSo: int) -> bool:
         vt = self.timVTSvTheoMssv(maSo)
         if vt != -1:
@@ -54,131 +72,37 @@ class DanhSach:
             return True
         else:
             return False
-
-    def timSVTheoTen(self, ten: str):
-        return [ sv for sv in self.dssv if sv.hoTen == ten]
+    
+    def timSvTheoTen(self, ten:str):
+        for sv in self.dssv:
+            l = sv.hoTen.split()
+            n = len(l)
+            if l[n - 1] == ten:
+                return sv
 
     def timSvSinhTruocNgay(self, ngay: datetime):
-        return [ sv for sv in self.dssv if sv.ngaySinh < ngay]
+        ds = []
+        for sv in self.dssv:
+            if sv.ngaySinh < ngay:
+                ds.append(sv)
+        return ds
+    def sapXepDSTang_HoTen(self):
+        ds = sorted(self.dssv, key=lambda item: item.hoTen)
+        return ds
+ds = DanhSachSV()
+sv = SinhVien(0, "Zero", "0/0/0000")
+ds.themSinhVien(SinhVien(1, "Thục Nguyên", "8/4/2004"))
+ds.themSinhVien(SinhVien(2, "Thuyên", "4/4/2004"))
+ds.xuat()
+print(sv)
 
-f = open("Lab2.txt", "r")
+print(ds.timSvTheoTen("Nguyên"))
+dskq = DanhSachSV()
+
+f = open("D:\Works\Python lab\Lab 2\Lab2.txt", encoding= "utf8")
 for x in f:
-  print(x)
-
-class PhanSo:
-    def __init__(self, tu: int = 0, mau: int = 1) -> None:
-        if mau == 0:
-            raise ArithmeticError('Phan so khong the co mau bang 0')
-        self.tu = tu
-        self.mau = mau
-        self.rutGon()
-
-    def tinhGiaTriCuaPhanSo(self) -> float:
-        return self.tu / self.mau
-
-    def ktPhanSoAm(self):
-        return self.tu * self.mau < 0
-
-    @staticmethod
-    def my_gcd_1(num1: int, num2: int):
-        ucln = 1
-        if num1 < num2:
-            num = num1
-        else:
-            num = num2
-        for i in range(2, num + 1):
-            if num1 % i == 0 and num2 % i == 0:
-                ucln = i
-        return ucln
-
-    @staticmethod
-    def my_gcd_2(num1: int, num2: int):
-        while num1 != num2:
-            if num1 > num2:
-                num1 -= num2
-            else:
-                num2 -= num1
-        return num1
-
-    @staticmethod
-    def my_gcd3(num1: int, num2: int):
-        while num2:
-            num1, num2 = num2, num1 % num2
-        return num1
-
-    def my_gcd_4(self, num1: int, num2: int):
-        if num2 == 0:
-            return num1
-        else:
-            return self.my_gcd_4(num2, num1 % num2)
-
-    def my_gcd_5(self, num1: int, num2: int):
-        if num1 == 0 or num2 == 0:
-            return num1 + num2
-
-        if num1 == num2:
-            return num1
-
-        if num1 > num2:
-            return self.my_gcd_5(num1 - num2, num2)
-
-        else:
-            return self.my_gcd_5(num1, num2 - num1)
-
-    def rutGon(self):
-        gcd = self.my_gcd_4(self.tu, self.mau)
-        if gcd != 1:
-            self.tu = self.tu // gcd
-            self.mau = self.mau // gcd
-
-    def __add__(self, other):
-        result = PhanSo(self.tu * other.mau + self.mau * other.tu, self.mau *
-                        other.mau)
-        result.rutGon()
-        return result
-
-    def bcnn(self, a, b):
-        return int(a * b) / self.my_gcd_4(a, b)
-
-    # def __lt__(self, other):
-    #     if not isinstance(other, PhanSo):
-    #         other = PhanSo(other, 1)
-    #     mau_chung = self.bcnn(self.mau, other.mau)
-    #     print(f"UCLN cua {self.mau} va {other.mau} la: {mau_chung}")
-    #     if other.mau == mau_chung:
-    #         return self.tu * mau_chung < other.tu
-    #     elif self.mau == mau_chung:
-    #         return self.tu < other.tu * mau_chung
-    #     return self.tu * mau_chung < other.tu * mau_chung
-
-    # def __gt__(self, other):
-    #     if not isinstance(other, PhanSo):
-    #         other = PhanSo(other, 1)
-    #     mau_chung = self.bcnn(self.mau, other.mau)
-    #     print(f"UCLN cua {self.mau} va {other.mau} la: {mau_chung}")
-    #     if other.mau == mau_chung:
-    #         return self.tu * mau_chung > other.tu
-    #     elif self.mau == mau_chung:
-    #         return self.tu > other.tu * mau_chung
-    #     return self.tu * mau_chung > other.tu * mau_chung
-
-    def __sub__(self, other):
-        result = PhanSo(self.tu * other.mau - self.mau * other.tu,
-                        self.mau * other.mau)
-        result.rutGon()
-        return result
-
-    def __mul__(self, other):
-        result = PhanSo(self.tu * other.tu, self.mau * other.mau)
-        result.rutGon()
-        return result
-
-    def __truediv__(self, other):
-        result = PhanSo(self.tu * other.mau, self.mau * other.tu)
-        result.rutGon()
-        return result
-
-    def __str__(self):
-        if self.mau == 1:
-            return f'{self.tu}'
-        return f'{self.tu}/{self.mau}'
+    l = x.split(",")
+    ds.themSinhVien(SinhVien(l[0], l[1], l[2]))
+f.close()
+ds.xuat()
+ds = ds.sapXepDSTang_HoTen()

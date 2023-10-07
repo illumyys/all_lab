@@ -101,9 +101,7 @@ if __name__ == "__main__":
         # Xác định màu sắc và vị trí của các mảnh hiện tại, tiếp theo và được giữ
         
         held_info = getInfo(held_piece)
-
         next_info = getInfo(next_piece)
-
         coords, color = getInfo(current_piece)
         if current_piece == "I":
             top_left = [-2, 3]
@@ -184,8 +182,7 @@ if __name__ == "__main__":
                 coords = dummy.copy()
             
             if drop:
-                    # Mỗi lần lặp của vòng lặp sẽ di chuyển mảnh xuống 1 và nếu mảnh đó nằm trên mặt đất hoặc mảnh khác thì nó dừng lại và đặt nó vào vị trí
-                
+            # Mỗi lần lặp của vòng lặp sẽ di chuyển mảnh xuống 1 và nếu mảnh đó nằm trên mặt đất hoặc mảnh khác thì nó dừng lại và đặt nó vào vị trí
                 while not place:
                     if np.max(coords[:,0]) != 19:
                         # Kiểm tra xem mảnh có nằm trên thứ gì không
@@ -210,7 +207,7 @@ if __name__ == "__main__":
                 drop = False
 
             else:
-                    # Kiểm tra xem mảnh có cần được đặt không
+                # Kiểm tra xem mảnh có cần được đặt không
                 if np.max(coords[:,0]) != 19:
                     for pos in coords:
                         if not np.array_equal(board[pos[0] + 1, pos[1]], [0, 0, 0]):
